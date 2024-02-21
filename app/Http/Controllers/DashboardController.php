@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
     public function viewOffersByCompany()
     {
-        $company = Company::find(Auth::user()->id);
+        $company = Company::find(Auth::user()->company->id);
         $offers = CompanyOffer::where('company_id', $company->id)->get();
 
         return view('dashboard/offers', [
@@ -32,7 +32,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function viewSingleOfferByCompany($id)
+    public function viewSingleOfferByCompany($slug,$id)
     {
         $offer = CompanyOffer::where('id', $id)->first();
 

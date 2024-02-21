@@ -7,9 +7,18 @@
                 <h1>Voici les entreprises</h1>
             </div>
             @foreach($companies as $company)
-                <h2>{{$company->name}}</h2>
-                <p>{{$company->description}}</p>
-                <a href="{{route('company', $company->id)}}">Voir l'entreprise</a>
+                @if(count($company->offers) > 0)
+                    <div class="col-lg-3 col-md-4 col-sm-12">
+                        <div class="card mb-4">
+                            <img src="{{ asset($company->logo) }}" class="card-img-top" alt="{{$company->name}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{$company->company_name}}</h5>
+                                <a href="{{route('company',[$company->slug, $company->id])}}" class="btn btn-primary">Voir
+                                    l'entreprise</a>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             @endforeach
         </div>
     </div>
