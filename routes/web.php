@@ -57,6 +57,8 @@ Route::get('/déconnexion', [App\Http\Controllers\AuthController::class, 'logout
 Route::get('/verify_email/{email}', [App\Http\Controllers\AuthController::class, 'verify'])->name('verification.verify');
 /* Message */
 Route::post('/conversation/message', [App\Http\Controllers\ConversationController::class, 'createMessage'])->name('conversation.message.create');
+Route::post('/message/seen/{id}', [App\Http\Controllers\ConversationController::class, 'seen'])->name('message.seen');
+
 /* Dashboard */
 Route::prefix('dashboard')->middleware(['auth','checkrole'])->group(function () {
     /* GET */

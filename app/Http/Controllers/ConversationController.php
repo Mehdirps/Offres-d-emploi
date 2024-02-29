@@ -53,4 +53,15 @@ class ConversationController extends Controller
         }
     }
 
+    public function seen($id)
+    {
+        $message = Message::find($id);
+
+        if ($message->user_id != auth()->id()) {
+            $message->seen = 1;
+            $message->save();
+        }
+        return response()->json(['success' => 'Message seen status updated successfully']);
+    }
+
 }

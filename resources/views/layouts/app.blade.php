@@ -74,6 +74,34 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     @yield('footer_script_app')
+    <script>
+        $(document).ready(function () {
+            var observer = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        var messageId = $(entry.target).data('id');
+                        if ($(entry.target).data('user') === 'other' && $(entry.target).data('seen') == 0) {
+                            $.ajax({
+                                url: '/message/seen/' + messageId,
+                                type: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function () {
+                                    $(entry.target).css('border-color', '#dee2e6');
+                                    $(entry.target).data('seen', 1);
+                                }
+                            });
+                        }
+                    }
+                });
+            }, {});
+
+            $('.card.mb-3').each(function() {
+                observer.observe(this);
+            });
+        });
+    </script>
 </footer>
 </body>
 </html>
