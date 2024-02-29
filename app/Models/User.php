@@ -46,4 +46,19 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\Company');
     }
+
+    public function apply()
+    {
+        return $this->hasMany('App\Models\ApplyOffer');
+    }
+
+    public function favoriteOffers()
+    {
+        return $this->belongsToMany('App\Models\CompanyOffer', 'user_favorite_offer', 'user_id', 'offer_id');
+    }
+
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class, 'user_id');
+    }
 }

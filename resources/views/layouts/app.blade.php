@@ -34,11 +34,13 @@
                         <a class="nav-link" href="{{route('offers')}}">Offres d'emploi</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search" action="{{ route('offers.search') }}" method="get">
-                    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher" aria-label="Rechercher">
-                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                </form>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    Rechercher des offres
+                </button>
                 @if(\Illuminate\Support\Facades\Auth::user())
+                    @if(\Illuminate\Support\Facades\Auth::user()->role === 'candidat' && \Illuminate\Support\Facades\Auth::user()->email_verified_at)
+                        <a class="btn btn-success" href="{{route('user.panel', \Illuminate\Support\Facades\Auth::user()->id)}}">Mon espace</a>
+                    @endif
                     <a class="btn btn-danger" href="{{route('auth.logout')}}">Déconnexion</a>
                 @else
                     <ul class="navbar-nav mb-2 mb-lg-0">
@@ -62,6 +64,7 @@
         </div>
     </nav>
 </header>
+@include('partials.search')
 @yield('content')
 <footer>
     <div class="container">
@@ -69,6 +72,8 @@
         <p><strong>MonOffreD'emploi.fr</strong></p>
         <p>© 2024 - Tous droits réservés</p>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    @yield('footer_script_app')
 </footer>
 </body>
 </html>
