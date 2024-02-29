@@ -30,6 +30,7 @@
                                     <div class="card-body" style="{{ $message->user_id == auth()->id() ? 'text-align:right' : '' }}">
                                         <h5 class="card-title">{{ $message->user_id == auth()->id() ? 'Moi' : $message->user->name }} </h5>
                                         <p class="card-text">{{ $message->message }}</p>
+                                        <small style="opacity: .5; font-size: .7rem">{{$message->created_at}}</small>
                                     </div>
                                 </div>
                             @endforeach
