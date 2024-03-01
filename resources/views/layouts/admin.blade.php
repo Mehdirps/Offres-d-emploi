@@ -16,7 +16,7 @@
 <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid container">
-            <a class="navbar-brand" href="{{route('dashboard')}}">Administration</a>
+            <a class="navbar-brand" href="{{route('admin')}}">Administration</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="">Les entreprises</a>
+                        <a class="nav-link" href="{{route('admin.companies')}}">Les entreprises</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">Les offres d'emploi</a>
@@ -47,7 +47,12 @@
         </div>
     </nav>
 </header>
-<main>
+<main class="container">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{session('success')}}
+        </div>
+    @endif
     @yield('admin_content')
 </main>
 <footer>

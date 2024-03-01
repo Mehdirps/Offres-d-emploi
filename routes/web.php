@@ -79,4 +79,13 @@ Route::prefix('dashboard')->middleware(['auth','checkrole'])->group(function () 
     Route::delete('/offre/{id}', [App\Http\Controllers\CompanyOfferController::class, 'delete'])->name('dashboard.offers.delete');
 });
 
+/* Admin */
+Route::prefix('admin')->middleware(['auth','checkadmin'])->group(function () {
+    Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+    Route::get('/entreprises', [App\Http\Controllers\AdminController::class, 'companies'])->name('admin.companies');
+    Route::get('/entreprise/{id}', [App\Http\Controllers\AdminController::class, 'singleCompany'])->name('admin.company');
+    Route::post('/entreprise/{id}', [App\Http\Controllers\AdminController::class, 'updateCompany'])->name('admin.company.update');
+});
+
+
 
