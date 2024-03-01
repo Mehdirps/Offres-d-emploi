@@ -81,6 +81,51 @@ class AdminController extends Controller
         return redirect()->route('admin.companies')->with('success', 'Les informations de votre entreprise ont bien été mises à jour.');
     }
 
+    public function deleteCompany($id)
+    {
+        $company = Company::find($id);
+
+        if (!auth()->user()->role === 'admin') {
+            return redirect()->route('dashboard.company');
+        }
+
+        if ($company->logo && file_exists(public_path($company->logo))) {
+            unlink(public_path($company->logo));
+        }
+
+        if ($company->banner && file_exists(public_path($company->banner))) {
+            unlink(public_path($company->banner));
+        }
+
+        if ($company->offers) {
+            foreach ($company->offers as $offer) {
+                if ($offer->logo && file_exists(public_path($offer->logo))) {
+                    unlink(public_path($offer->logo));
+                }
+
+                if ($offer->apply) {
+                    foreach ($offer->apply as $apply) {
+
+                        if ($apply->curriculum && file_exists(public_path($apply->curriculum))) {
+                            unlink(public_path($apply->curriculum));
+                        }
+
+                        if ($apply->cover_letter && file_exists(public_path($apply->cover_letter))) {
+                            unlink(public_path($apply->cover_letter));
+                        }
+
+                        $apply->delete();
+                    }
+                }
+
+                $offer->delete();
+            }
+        }
+
+        $company->delete();
+
+        return redirect()->route('admin.companies')->with('success', 'Entreprise supprimée avec succès');
+    }
 
     public function offers()
     {

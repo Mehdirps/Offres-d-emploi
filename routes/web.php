@@ -87,6 +87,7 @@ Route::prefix('admin')->middleware(['auth', 'checkadmin'])->group(function () {
     Route::get('/entreprises', [App\Http\Controllers\AdminController::class, 'companies'])->name('admin.companies');
     Route::get('/entreprise/{id}', [App\Http\Controllers\AdminController::class, 'singleCompany'])->name('admin.company');
     Route::post('/entreprise/{id}', [App\Http\Controllers\AdminController::class, 'updateCompany'])->name('admin.company.update');
+    Route::delete('/entreprise/{id}', [App\Http\Controllers\AdminController::class, 'deleteCompany'])->name('admin.company.delete');
 
     /* Offers */
     Route::get('/offres', [App\Http\Controllers\AdminController::class, 'offers'])->name('admin.offers');
