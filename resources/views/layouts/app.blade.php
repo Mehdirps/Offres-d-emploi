@@ -97,7 +97,7 @@
                 });
             }, {});
 
-            $('.card.mb-3').each(function() {
+            $('.message').each(function() {
                 observer.observe(this);
             });
         });
