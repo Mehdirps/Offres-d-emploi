@@ -46,6 +46,7 @@
                         @else
                             <span class="badge bg-danger">Inactive</span>
                     @endif
+                    </td>
                     <td>
                         <div class="btn-group" role="group">
                             <a href="{{ route('company', [$company->slug, $company->id]) }}" class="btn btn-primary">Voir</a>
