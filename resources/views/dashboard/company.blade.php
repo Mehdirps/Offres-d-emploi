@@ -2,6 +2,13 @@
 @section('title', 'Mon entreprise')
 @section('content')
     <div class="container">
+        @if(!$company->active)
+            <div class="alert alert-danger">Votre entreprise a été désactivé par un administrateur. Contactez
+                le service client pour plus d'informations.
+                <br>
+                Votre entreprise ainsi que vos offres d'emploi n'apparaissent plus sur notre site.
+            </div>
+        @endif
         <div class="btn btn-primary" data-bs-target="#edit-company" data-bs-toggle="modal">Modifier les informations
         </div>
         @if(session('success'))

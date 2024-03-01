@@ -12,7 +12,11 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard/index');
+        $company = Company::where('user_id', Auth::user()->id)->first();
+
+        return view('dashboard/index',[
+            'company' => $company
+        ]);
     }
 
     public function viewCompany()
