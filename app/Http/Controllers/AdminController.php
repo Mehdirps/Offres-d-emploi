@@ -99,9 +99,6 @@ class AdminController extends Controller
 
         if ($company->offers) {
             foreach ($company->offers as $offer) {
-                if ($offer->logo && file_exists(public_path($offer->logo))) {
-                    unlink(public_path($offer->logo));
-                }
 
                 if ($offer->apply) {
                     foreach ($offer->apply as $apply) {
