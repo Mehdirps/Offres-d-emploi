@@ -92,6 +92,7 @@ Route::prefix('admin')->middleware(['auth', 'checkadmin'])->group(function () {
     Route::get('/offres', [App\Http\Controllers\AdminController::class, 'offers'])->name('admin.offers');
     Route::get('/offre/{id}', [App\Http\Controllers\AdminController::class, 'singleOffer'])->name('admin.offer');
     Route::post('/offre/{id}', [App\Http\Controllers\AdminController::class, 'updateOffer'])->name('admin.offer.update');
+    Route::delete('/offre/{id}', [App\Http\Controllers\AdminController::class, 'deleteOffer'])->name('admin.offer.delete');
 });
 
 
