@@ -53,7 +53,7 @@
                                    class="btn btn-primary">Voir</a>
                                 <a href="{{ route('admin.company', $company->id) }}"
                                    class="btn btn-warning">Modifier</a>
-                                <form action="{{ route('admin.company.delete', $company->id) }}" method="post"
+                                <form class="delete_company" action="{{ route('admin.company.delete', $company->id) }}" method="post"
                                       data-company="{{ $company->company_name }}">
                                     @csrf
                                     @method('delete')
@@ -76,7 +76,7 @@
 
 @section('admin_footer')
     <script>
-        document.querySelectorAll('form').forEach(form => {
+        document.querySelectorAll('.delete_company').forEach(form => {
             form.addEventListener('submit', e => {
                 const company = e.target.getAttribute('data-company');
                 if (!confirm('Voulez-vous vraiment supprimer l\'entreprise ' + company + '?')) {

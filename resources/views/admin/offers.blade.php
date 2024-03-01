@@ -45,7 +45,7 @@
                             <a href="{{route('company.offers', [$offer->slug,$offer->id])}}"
                                class="btn btn-primary">Voir</a>
                             <a class="btn btn-secondary" href="{{route('admin.offer', [$offer->id])}}">Edit</a>
-                            <form action="{{route('admin.offer.delete', [$offer->id])}}" method="post" data-offer="{{$offer->title}}">
+                            <form class="delete_offer" action="{{route('admin.offer.delete', [$offer->id])}}" method="post" data-offer="{{$offer->title}}">
                                 @csrf
                                 @method('delete')
                                 <input type="submit" class="btn btn-danger" value="Supprimer">
@@ -61,7 +61,7 @@
 
 @section('admin_footer')
     <script>
-        document.querySelectorAll('form').forEach(form => {
+        document.querySelectorAll('.delete_offer').forEach(form => {
             form.addEventListener('submit', e => {
                 const title = e.target.getAttribute('data-offer');
                 if (!confirm('Voulez-vous vraiment supprimer l\'offre '+ title +'?')) {
