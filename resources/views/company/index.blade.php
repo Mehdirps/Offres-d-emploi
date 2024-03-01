@@ -8,7 +8,7 @@
                     <h1>Listes des entreprises</h1>
                 </div>
                 @foreach($companies as $company)
-                    @if(count($company->offers) > 0)
+                    @if(count($company->offers) > 0 && $company->active)
                         <div class="col-lg-3 col-md-4 col-sm-12">
                             <div class="card mb-4">
                                 <img src="{{ asset($company->logo) }}" class="card-img-top" alt="{{$company->name}}">

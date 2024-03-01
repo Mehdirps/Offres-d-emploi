@@ -37,7 +37,7 @@
                         </thead>
                         <tbody>
                         @foreach($offers as $offer)
-                            @if($offer->active)
+                            @if($offer->active && $offer->company->active)
                                 <tr>
                                     <td>
                                         <a href="{{route('company',[$offer->company->slug, $offer->company->id])}}"><img

@@ -17,22 +17,26 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function single($slug,$id)
+    public function single($slug, $id)
     {
         $company = Company::find($id);
         $offers = $company->offers;
 
-        return view('company/single', [
-            'company' => $company,
-            'offers' => $offers
-        ]);
+        if (!$company->active) {
+            return redirect()->route('companies');
+        } else {
+            return view('company/single', [
+                'company' => $company,
+                'offers' => $offers
+            ]);
+        }
     }
 
     public function update($id, CompanyRequest $request)
     {
         $company = Company::find($id);
 
-        if($company->user_id != auth()->user()->id) {
+        if ($company->user_id != auth()->user()->id) {
             return redirect()->route('dashboard.company');
         }
 
@@ -47,8 +51,8 @@ class CompanyController extends Controller
         $company->company_email = $request->company_email;
         $company->website = $request->website;
 
-        if($request->hasFile('logo')) {
-            if($company->logo && file_exists(public_path($company->logo))) {
+        if ($request->hasFile('logo')) {
+            if ($company->logo && file_exists(public_path($company->logo))) {
                 unlink(public_path($company->logo));
             }
 
@@ -58,8 +62,8 @@ class CompanyController extends Controller
             $company->logo = 'uploads/logos/' . $filename;
         }
 
-        if($request->hasFile('banner')) {
-            if($company->banner && file_exists(public_path($company->banner))) {
+        if ($request->hasFile('banner')) {
+            if ($company->banner && file_exists(public_path($company->banner))) {
                 unlink(public_path($company->banner));
             }
 

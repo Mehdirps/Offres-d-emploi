@@ -30,6 +30,12 @@ class CompanyOfferController extends Controller
         $offer->seen = $offer->seen + 1;
         $offer->save();
 
+        if(!$offer->active) {
+            return redirect()->route('offers');
+        }elseif(!$offer->company->active) {
+            return redirect()->route('offers');
+        }
+
         return view('offers/single', [
             'offer' => $offer,
             'company' => $company
