@@ -100,6 +100,7 @@ Route::prefix('admin')->middleware(['auth', 'checkadmin'])->group(function () {
     Route::get('/utilisateurs', [App\Http\Controllers\AdminController::class, 'users'])->name('admin.users');
     Route::get('/utilisateur/{id}', [App\Http\Controllers\AdminController::class, 'singleUser'])->name('admin.user');
     Route::post('/utilisateur/{id}', [App\Http\Controllers\AdminController::class, 'updateUser'])->name('admin.user.update');
+    Route::get('/utilisateurs/search', [App\Http\Controllers\AdminController::class, 'searchUsers'])->name('admin.users.search');
 });
 
 

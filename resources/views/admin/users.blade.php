@@ -56,6 +56,7 @@
             </div>
         @endif
     </section>
+    @include('admin.search_users')
 @endsection
 
 @section('admin_footer')

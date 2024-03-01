@@ -238,4 +238,18 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success', 'Utilisateur modifié avec succès');
     }
 
+    public function searchUsers(Request $request)
+    {
+        $search = $request->search;
+        $users = User::where('name', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%')
+            ->orWhere('phone', 'like', '%' . $search . '%')
+            ->orWhere('role', 'like', '%' . $search . '%')
+            ->paginate(15);
+
+        return view('admin.users', [
+            'users' => $users
+        ]);
+    }
+
 }
