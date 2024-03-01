@@ -6,6 +6,11 @@
     <section class="container">
         <h1>Les entreprises</h1>
         <p>Voici la liste des entreprises enregistrées dans la base de données.</p>
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchCompanyModal">
+                Rechercher une entreprise
+            </button>
+        </div>
         @if(count($companies) === 0)
             <div class="alert alert-info">Aucune entreprise n'a été enregistrée pour le moment ou ne correspond à votre recherche.</div>
         @else
@@ -77,6 +82,7 @@
             </div>
         @endif
     </section>
+    @include('partials.search_company')
 @endsection
 
 @section('admin_footer')

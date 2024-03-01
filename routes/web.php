@@ -23,6 +23,7 @@ Route::prefix('entreprise')->group(function () {
     Route::get('/', [App\Http\Controllers\CompanyController::class, 'index'])->name('companies');
     Route::get('/{slug}/{id}', [App\Http\Controllers\CompanyController::class, 'single'])->name('company');
     Route::get('/offre/{slug}/{id}', [App\Http\Controllers\CompanyOfferController::class, 'single'])->name('company.offers');
+    Route::get('/search', [App\Http\Controllers\CompanyController::class, 'search'])->name('companies.search');
 });
 /* Offers */
 Route::get('/offres', [App\Http\Controllers\CompanyOfferController::class, 'index'])->name('offers');

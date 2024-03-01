@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::all();
+        $companies = Company::paginate(10);
 
         return view('company/index', [
             'companies' => $companies
@@ -76,6 +77,24 @@ class CompanyController extends Controller
         $company->save();
 
         return redirect()->route('dashboard.company')->with('success', 'Les informations de votre entreprise ont bien été mises à jour.');
+    }
+
+    public function search(Request $request)
+    {
+        $companies = Company::where('company_name', 'like', '%' . $request->search . '%')
+            ->orWhere('postal_code', 'like', '%' . $request->search . '%')
+            ->orWhere('city', 'like', '%' . $request->search . '%')
+            ->paginate(10);
+
+        if(auth()->user() && auth()->user()->role == 'candidat') {
+            return view('company/index', [
+                'companies' => $companies
+            ]);
+        }else if(auth()->user() && auth()->user()->role == 'admin') {
+            return view('admin/companies', [
+                'companies' => $companies
+            ]);
+        }
     }
 
 }
