@@ -6,6 +6,7 @@ use App\Http\Requests\CompanyRequest;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use Illuminate\Support\Str;
+use App\Models\CompanyOffer;
 
 class AdminController extends Controller
 {
@@ -27,7 +28,7 @@ class AdminController extends Controller
     {
         $company = Company::find($id);
 
-        return view('admin.update_company', [
+        return view('admin.crud.update_company', [
             'company' => $company
         ]);
     }
@@ -77,5 +78,14 @@ class AdminController extends Controller
         $company->save();
 
         return redirect()->route('admin.companies')->with('success', 'Les informations de votre entreprise ont bien été mises à jour.');
+    }
+
+    public function offers()
+    {
+        $offers = CompanyOffer::paginate(15);
+
+        return view('admin.offers',[
+            'offers' => $offers
+        ]);
     }
 }

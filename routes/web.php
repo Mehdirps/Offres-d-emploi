@@ -90,6 +90,7 @@ Route::prefix('admin')->middleware(['auth','checkadmin'])->group(function () {
 
     /* Offers */
     Route::get('/offres', [App\Http\Controllers\AdminController::class, 'offers'])->name('admin.offers');
+
 });
 
 
