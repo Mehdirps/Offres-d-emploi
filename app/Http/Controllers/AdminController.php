@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\CompanyOffer;
 
@@ -19,7 +20,7 @@ class AdminController extends Controller
     {
         $companies = Company::paginate(15);
 
-        return view('admin.companies',[
+        return view('admin.companies', [
             'companies' => $companies
         ]);
     }
@@ -37,7 +38,7 @@ class AdminController extends Controller
     {
         $company = Company::find($id);
 
-        if(!auth()->user()->role === 'admin') {
+        if (!auth()->user()->role === 'admin') {
             return redirect()->route('dashboard.company');
         }
 
@@ -52,8 +53,8 @@ class AdminController extends Controller
         $company->company_email = $request->company_email;
         $company->website = $request->website;
 
-        if($request->hasFile('logo')) {
-            if($company->logo && file_exists(public_path($company->logo))) {
+        if ($request->hasFile('logo')) {
+            if ($company->logo && file_exists(public_path($company->logo))) {
                 unlink(public_path($company->logo));
             }
 
@@ -63,8 +64,8 @@ class AdminController extends Controller
             $company->logo = 'uploads/logos/' . $filename;
         }
 
-        if($request->hasFile('banner')) {
-            if($company->banner && file_exists(public_path($company->banner))) {
+        if ($request->hasFile('banner')) {
+            if ($company->banner && file_exists(public_path($company->banner))) {
                 unlink(public_path($company->banner));
             }
 
@@ -84,8 +85,47 @@ class AdminController extends Controller
     {
         $offers = CompanyOffer::paginate(15);
 
-        return view('admin.offers',[
+        return view('admin.offers', [
             'offers' => $offers
         ]);
     }
+
+    public function singleOffer($id)
+    {
+        $offer = CompanyOffer::find($id);
+
+        return view('admin.crud.update_offer', [
+            'offer' => $offer
+        ]);
+    }
+
+    public function updateOffer($id, Request $request)
+    {
+        $offer = CompanyOffer::find($id);
+
+        if (!auth()->user()->role === 'admin') {
+            return redirect()->route('dashboard.company');
+        }
+
+        $offer->title = $request->title;
+        $offer->slug = Str::slug($request->title, '-');
+        $offer->short_description = $request->short_description;
+        $offer->description = $request->description;
+        $offer->contract_type = $request->contract_type;
+        $offer->annual_salary_minumun = $request->annual_salary_minumun;
+        $offer->annual_salary_maximun = $request->annual_salary_maximun;
+        $offer->advantages = $request->advantages;
+        $offer->city = $request->city;
+        $offer->location = $request->location;
+        $offer->experience = $request->experience;
+        $offer->languages_required = $request->languages_required;
+        $offer->active = $request->active;
+
+        $offer->save();
+
+        return redirect()->route('admin.offers')->with('success', 'Offre modifiée avec succès');
+
+
+    }
+
 }

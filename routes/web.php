@@ -60,7 +60,7 @@ Route::post('/conversation/message', [App\Http\Controllers\ConversationControlle
 Route::post('/message/seen/{id}', [App\Http\Controllers\ConversationController::class, 'seen'])->name('message.seen');
 
 /* Dashboard */
-Route::prefix('dashboard')->middleware(['auth','checkrole'])->group(function () {
+Route::prefix('dashboard')->middleware(['auth', 'checkrole'])->group(function () {
     /* GET */
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/entreprise', [App\Http\Controllers\DashboardController::class, 'viewCompany'])->name('dashboard.company');
@@ -80,7 +80,7 @@ Route::prefix('dashboard')->middleware(['auth','checkrole'])->group(function () 
 });
 
 /* Admin */
-Route::prefix('admin')->middleware(['auth','checkadmin'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'checkadmin'])->group(function () {
     Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 
     /* Companies */
@@ -90,7 +90,8 @@ Route::prefix('admin')->middleware(['auth','checkadmin'])->group(function () {
 
     /* Offers */
     Route::get('/offres', [App\Http\Controllers\AdminController::class, 'offers'])->name('admin.offers');
-
+    Route::get('/offre/{id}', [App\Http\Controllers\AdminController::class, 'singleOffer'])->name('admin.offer');
+    Route::post('/offre/{id}', [App\Http\Controllers\AdminController::class, 'updateOffer'])->name('admin.offer.update');
 });
 
 

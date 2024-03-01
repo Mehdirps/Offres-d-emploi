@@ -14,12 +14,12 @@
                 <th>Présence</th>
                 <th>Lieu</th>
                 <th>Publiée le</th>
+                <th>Active</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             @foreach($offers as $offer)
-                @if($offer->active)
                     <tr>
                         <td>
                             <a href="{{route('company',[$offer->company->slug, $offer->company->id])}}"><img
@@ -33,14 +33,20 @@
                         <td>{{ $offer->city }}</td>
                         <td>{{ $offer->created_at }}</td>
                         <td>
+                            @if($offer->active)
+                                <span class="badge bg-success">Active</span>
+                            @else
+                                <span class="badge bg-danger">Inactive</span>
+                            @endif
+                        </td>
+                        <td>
                             <div class="btn-group" role="group">
                                 <a href="{{route('company.offers', [$offer->slug,$offer->id])}}"
                                    class="btn btn-primary">Voir</a>
-                                <a href="{{route('admin.offers.edit', [$offer->id])}}">Edit</a>
+                                <a class="btn btn-secondary" href="{{route('admin.offer', [$offer->id])}}">Edit</a>
                             </div>
                         </td>
                     </tr>
-                @endif
             @endforeach
             </tbody>
         </table>

@@ -28,7 +28,7 @@
                         <a class="nav-link" href="{{route('admin.companies')}}">Les entreprises</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Les offres d'emploi</a>
+                        <a class="nav-link" href="{{route('admin.offers')}}">Les offres d'emploi</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">Les utilisateurs</a>
@@ -59,6 +59,7 @@
     <div class="container">
         <p>&copy; 2020 - Mon site</p>
     </div>
+    @yield('admin_footer')
 </footer>
 </body>
 </html>
