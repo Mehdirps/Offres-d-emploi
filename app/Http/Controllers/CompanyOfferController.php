@@ -156,14 +156,20 @@ class CompanyOfferController extends Controller
 
         $offers = $offers->get();
 
-        return view('offers.search', [
-            'offers' => $offers,
-            'query' => $query,
-            'contract_type' => $contract_type,
-            'location' => $location,
-            'localisation' => $localisation,
-            'company' => $company
-        ]);
+        if(\auth()->user() && \auth()->user()->role === 'company') {
+            return view('dashboard.offers.search', [
+                'offers' => $offers,
+                'query' => $query,
+                'contract_type' => $contract_type,
+                'location' => $location,
+                'localisation' => $localisation,
+                'company' => $company
+            ]);
+        }else if (\auth()->user() && \auth()->user()->role === 'admin') {
+            return view('admin.offers', [
+                'offers' => $offers,
+            ]);
+        }
     }
 
     public function apply(OfferApplyRequest $request)

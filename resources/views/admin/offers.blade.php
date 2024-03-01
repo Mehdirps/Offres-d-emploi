@@ -5,8 +5,13 @@
 @section('admin_content')
     <h1>Les offres d'emploi</h1>
     <p>Voici la liste des offres d'emploi enregistrées dans la base de données.</p>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
+        Rechercher des offres
+    </button>
     @if(count($offers) === 0)
-        <div class="alert alert-info">Aucune offre d'emploi n'a été enregistrée pour le moment ou ne correspond à votre recherche.</div>
+        <div class="alert alert-info">Aucune offre d'emploi n'a été enregistrée pour le moment ou ne correspond à votre
+            recherche.
+        </div>
     @else
         <div class="table-responsive">
             <table class="table">
@@ -62,6 +67,7 @@
             </table>
         </div>
     @endif
+    @include('partials.search')
 @endsection
 
 @section('admin_footer')
