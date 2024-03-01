@@ -74,6 +74,19 @@ class CompanyOfferController extends Controller
 
         $offer->favoriteUsers()->detach();
 
+        if($offer->apply) {
+            foreach($offer->apply as $apply) {
+                if($apply->curriculum) {
+                    unlink(public_path($apply->curriculum));
+                }
+                if($apply->cover_letter) {
+                    unlink(public_path($apply->cover_letter));
+                }
+
+                $apply->delete();
+            }
+        }
+
         $offer->delete();
 
         return redirect()->route('dashboard.offers')->with('success', 'Offre supprimée avec succès');
