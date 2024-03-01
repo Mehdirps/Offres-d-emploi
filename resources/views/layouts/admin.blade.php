@@ -31,7 +31,7 @@
                         <a class="nav-link" href="{{route('admin.offers')}}">Les offres d'emploi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Les utilisateurs</a>
+                        <a class="nav-link" href="{{route('admin.users')}}">Les utilisateurs</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0">
@@ -56,9 +56,6 @@
     @yield('admin_content')
 </main>
 <footer>
-    <div class="container">
-        <p>&copy; 2020 - Mon site</p>
-    </div>
     @yield('admin_footer')
 </footer>
 </body>

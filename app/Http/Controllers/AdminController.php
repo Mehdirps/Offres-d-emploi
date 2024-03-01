@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
@@ -196,6 +197,45 @@ class AdminController extends Controller
         $offer->delete();
 
         return redirect()->route('admin.offers')->with('success', 'Offre supprimée avec succès');
+    }
+
+    public function users()
+    {
+        $users = User::paginate(15);
+
+        return view('admin.users', [
+            'users' => $users
+        ]);
+    }
+
+    public function singleUser($id)
+    {
+        $user = User::find($id);
+
+        return view('admin.crud.update_user', [
+            'user' => $user
+        ]);
+    }
+
+    public function updateUser($id, Request $request)
+    {
+        $user = User::find($id);
+
+        if (!auth()->user()->role === 'admin') {
+            return redirect()->route('dashboard.company');
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+
+        if (!empty($request->password)) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users')->with('success', 'Utilisateur modifié avec succès');
     }
 
 }
