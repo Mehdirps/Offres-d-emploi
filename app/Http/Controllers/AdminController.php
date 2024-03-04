@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyRequest;
+use App\Models\Conversation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Company;
@@ -116,6 +117,20 @@ class AdminController extends Controller
                     }
                 }
 
+                $conversations = Conversation::where('offer_id', $offer->id)->get();
+
+                if ($conversations) {
+                    foreach ($conversations as $conversation) {
+                        $messages = $conversation->messages;
+                        if ($messages) {
+                            foreach ($messages as $message) {
+                                $message->delete();
+                            }
+                        }
+                        $conversation->delete();
+                    }
+                }
+
                 $offer->delete();
             }
         }
@@ -191,6 +206,20 @@ class AdminController extends Controller
                 }
 
                 $apply->delete();
+            }
+        }
+
+        $conversations = Conversation::where('offer_id', $id)->get();
+
+        if ($conversations) {
+            foreach ($conversations as $conversation) {
+                $messages = $conversation->messages;
+                if ($messages) {
+                    foreach ($messages as $message) {
+                        $message->delete();
+                    }
+                }
+                $conversation->delete();
             }
         }
 

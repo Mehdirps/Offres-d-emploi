@@ -6,6 +6,7 @@ use App\Http\Requests\OfferApplyRequest;
 use App\Http\Requests\OfferRequest;
 use App\Models\ApplyOffer;
 use App\Models\CompanyOffer;
+use App\Models\Conversation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -30,9 +31,9 @@ class CompanyOfferController extends Controller
         $offer->seen = $offer->seen + 1;
         $offer->save();
 
-        if(!$offer->active) {
+        if (!$offer->active) {
             return redirect()->route('offers');
-        }elseif(!$offer->company->active) {
+        } elseif (!$offer->company->active) {
             return redirect()->route('offers');
         }
 
@@ -74,16 +75,30 @@ class CompanyOfferController extends Controller
 
         $offer->favoriteUsers()->detach();
 
-        if($offer->apply) {
-            foreach($offer->apply as $apply) {
-                if($apply->curriculum) {
+        if ($offer->apply) {
+            foreach ($offer->apply as $apply) {
+                if ($apply->curriculum) {
                     unlink(public_path($apply->curriculum));
                 }
-                if($apply->cover_letter) {
+                if ($apply->cover_letter) {
                     unlink(public_path($apply->cover_letter));
                 }
 
                 $apply->delete();
+            }
+        }
+
+        $conversations = Conversation::where('offer_id', $id)->get();
+
+        if ($conversations) {
+            foreach ($conversations as $conversation) {
+                $messages = $conversation->messages;
+                if ($messages) {
+                    foreach ($messages as $message) {
+                        $message->delete();
+                    }
+                }
+                $conversation->delete();
             }
         }
 
@@ -157,7 +172,7 @@ class CompanyOfferController extends Controller
 
         $offers = $offers->get();
 
-        if(\auth()->user() && \auth()->user()->role === 'company') {
+        if (\auth()->user() && \auth()->user()->role === 'company') {
             return view('dashboard.offers.search', [
                 'offers' => $offers,
                 'query' => $query,
@@ -166,7 +181,7 @@ class CompanyOfferController extends Controller
                 'localisation' => $localisation,
                 'company' => $company
             ]);
-        }else if (\auth()->user() && \auth()->user()->role === 'admin') {
+        } else if (\auth()->user() && \auth()->user()->role === 'admin') {
             return view('admin.offers', [
                 'offers' => $offers,
             ]);
@@ -192,7 +207,7 @@ class CompanyOfferController extends Controller
             ->where('offer_id', $request->offer_id)
             ->exists();
 
-        if($hasApplied) {
+        if ($hasApplied) {
             return redirect()->back()->with('error', 'Vous avez déjà postulé à cette offre');
         }
 
