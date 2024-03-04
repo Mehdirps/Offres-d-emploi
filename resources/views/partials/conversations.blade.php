@@ -5,18 +5,18 @@
             @if(count($conversations) > 0)
                 @foreach($conversations as $conversation)
                     @php
-                        if(count($conversation->messages) > 0){
-                            $messagesNoSeen = 0;
-                            foreach ($conversation->messages as $message) {
-                               if($message->user_id != auth()->id() && $message->seen == 0){
-                                   $messagesNoSeen++;
-                               }
+                        $messagesNoSeen = 0;
+                            if(count($conversation->messages) > 0){
+                                foreach ($conversation->messages as $message) {
+                                   if($message->user_id != auth()->id() && $message->seen == 0){
+                                       $messagesNoSeen++;
+                                   }
+                                }
                             }
-                        }
 
                     @endphp
                     <div class="card mb-3">
-                        @if($messagesNoSeen !== 0)
+                        @if($messagesNoSeen && $messagesNoSeen !== 0)
                             <div class="position-absolute bg-danger text-white rounded-circle"
                                  style="width: 20px; height: 20px; top: 0; right: 0; transform: translate(50%, -50%); display: flex; justify-content: center; align-items: center;">
                                 {{ $messagesNoSeen }}
