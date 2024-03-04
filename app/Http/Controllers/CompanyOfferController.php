@@ -124,6 +124,7 @@ class CompanyOfferController extends Controller
 
     public function search(Request $request)
     {
+
         $query = $request->input('query');
         $contract_type = $request->input('contract_type');
         $location = $request->input('location');
@@ -168,6 +169,15 @@ class CompanyOfferController extends Controller
         }else if (\auth()->user() && \auth()->user()->role === 'admin') {
             return view('admin.offers', [
                 'offers' => $offers,
+            ]);
+        } else {
+            return view('offers/search', [
+                'offers' => $offers,
+                'query' => $query,
+                'contract_type' => $contract_type,
+                'location' => $location,
+                'localisation' => $localisation,
+                'company' => $company
             ]);
         }
     }
