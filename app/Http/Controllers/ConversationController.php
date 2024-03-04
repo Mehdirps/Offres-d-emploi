@@ -30,7 +30,7 @@ class ConversationController extends Controller
 
     public function showAdmin()
     {
-        $conversations = Conversation::where('company_id', auth()->id())->get();
+        $conversations = Conversation::where('company_id', auth()->user()->company->id)->get();
         return view('dashboard.conversations', [
             'conversations' => $conversations
         ]);
@@ -49,7 +49,7 @@ class ConversationController extends Controller
         if($user->role === 'entreprise') {
             return redirect()->route('conversations.show', ['id' => $request->conversation_id]);
         }elseif($user->role === 'candidat'){
-            return redirect()->route('user.panel', ['id' => $request->conversation_id, 'conv_id' => $request->conversation_id]);
+            return redirect()->route('user.panel', ['id' => auth()->id(), 'conv_id' => $request->conversation_id]);
         }
     }
 
