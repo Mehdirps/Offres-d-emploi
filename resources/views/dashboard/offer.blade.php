@@ -82,6 +82,7 @@
                                 <th>Message</th>
                                 <th>Status</th>
                                 <th>Changer le status</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -124,6 +125,17 @@
                                                     Refusé
                                                 </option>
                                             </select>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="{{route('conversation.store')}}" method="post">
+                                            @csrf
+                                            @method('POST')
+                                            <input type="hidden" name="user_id" value="{{$item->user->id}}">
+                                            <input type="hidden" name="offer_id" value="{{$item->offer->id}}">
+                                            <input type="hidden" name="company_id"
+                                                   value="{{$item->offer->company->id}}">
+                                            <button type="submit" class="btn btn-primary">Contacter</button>
                                         </form>
                                     </td>
                                 </tr>
