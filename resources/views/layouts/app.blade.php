@@ -39,7 +39,8 @@
                 </button>
                 @if(\Illuminate\Support\Facades\Auth::user())
                     @if(\Illuminate\Support\Facades\Auth::user()->role === 'candidat' && \Illuminate\Support\Facades\Auth::user()->email_verified_at)
-                        <a class="btn btn-success" href="{{route('user.panel', \Illuminate\Support\Facades\Auth::user()->id)}}">Mon espace</a>
+                        <a class="btn btn-success"
+                           href="{{route('user.panel', \Illuminate\Support\Facades\Auth::user()->id)}}">Mon espace</a>
                     @endif
                     <a class="btn btn-danger" href="{{route('auth.logout')}}">Déconnexion</a>
                 @else
@@ -64,19 +65,22 @@
         </div>
     </nav>
 </header>
-@include('partials.search')
-@yield('content')
+<main>
+    @include('partials.search')
+    @yield('content')
+</main>
 <footer>
     <div class="container">
         <hr>
         <p><strong>MonOffreD'emploi.fr</strong></p>
         <p>© 2024 - Tous droits réservés</p>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     @yield('footer_script_app')
     <script>
         $(document).ready(function () {
-            var observer = new IntersectionObserver(function(entries, observer) {
+            var observer = new IntersectionObserver(function (entries, observer) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         var messageId = $(entry.target).data('id');
@@ -97,7 +101,7 @@
                 });
             }, {});
 
-            $('.message').each(function() {
+            $('.message').each(function () {
                 observer.observe(this);
             });
         });
