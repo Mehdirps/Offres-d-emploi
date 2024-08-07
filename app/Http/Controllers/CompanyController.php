@@ -5,34 +5,39 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::all();
+        $companies = Company::paginate(10);
 
         return view('company/index', [
             'companies' => $companies
         ]);
     }
 
-    public function single($slug,$id)
+    public function single($slug, $id)
     {
         $company = Company::find($id);
         $offers = $company->offers;
 
-        return view('company/single', [
-            'company' => $company,
-            'offers' => $offers
-        ]);
+        if (!$company->active) {
+            return redirect()->route('companies');
+        } else {
+            return view('company/single', [
+                'company' => $company,
+                'offers' => $offers
+            ]);
+        }
     }
 
     public function update($id, CompanyRequest $request)
     {
         $company = Company::find($id);
 
-        if($company->user_id != auth()->user()->id) {
+        if ($company->user_id != auth()->user()->id) {
             return redirect()->route('dashboard.company');
         }
 
@@ -47,8 +52,8 @@ class CompanyController extends Controller
         $company->company_email = $request->company_email;
         $company->website = $request->website;
 
-        if($request->hasFile('logo')) {
-            if($company->logo && file_exists(public_path($company->logo))) {
+        if ($request->hasFile('logo')) {
+            if ($company->logo && file_exists(public_path($company->logo))) {
                 unlink(public_path($company->logo));
             }
 
@@ -58,8 +63,8 @@ class CompanyController extends Controller
             $company->logo = 'uploads/logos/' . $filename;
         }
 
-        if($request->hasFile('banner')) {
-            if($company->banner && file_exists(public_path($company->banner))) {
+        if ($request->hasFile('banner')) {
+            if ($company->banner && file_exists(public_path($company->banner))) {
                 unlink(public_path($company->banner));
             }
 
@@ -72,6 +77,24 @@ class CompanyController extends Controller
         $company->save();
 
         return redirect()->route('dashboard.company')->with('success', 'Les informations de votre entreprise ont bien été mises à jour.');
+    }
+
+    public function search(Request $request)
+    {
+        $companies = Company::where('company_name', 'like', '%' . $request->search . '%')
+            ->orWhere('postal_code', 'like', '%' . $request->search . '%')
+            ->orWhere('city', 'like', '%' . $request->search . '%')
+            ->paginate(10);
+
+        if(auth()->user() && auth()->user()->role == 'candidat') {
+            return view('company/index', [
+                'companies' => $companies
+            ]);
+        }else if(auth()->user() && auth()->user()->role == 'admin') {
+            return view('admin/companies', [
+                'companies' => $companies
+            ]);
+        }
     }
 
 }

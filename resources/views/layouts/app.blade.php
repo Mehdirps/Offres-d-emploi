@@ -34,11 +34,14 @@
                         <a class="nav-link" href="{{route('offers')}}">Offres d'emploi</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search" action="{{ route('offers.search') }}" method="get">
-                    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher" aria-label="Rechercher">
-                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                </form>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    Rechercher des offres
+                </button>
                 @if(\Illuminate\Support\Facades\Auth::user())
+                    @if(\Illuminate\Support\Facades\Auth::user()->role === 'candidat' && \Illuminate\Support\Facades\Auth::user()->email_verified_at)
+                        <a class="btn btn-success"
+                           href="{{route('user.panel', \Illuminate\Support\Facades\Auth::user()->id)}}">Mon espace</a>
+                    @endif
                     <a class="btn btn-danger" href="{{route('auth.logout')}}">Déconnexion</a>
                 @else
                     <ul class="navbar-nav mb-2 mb-lg-0">
@@ -62,13 +65,47 @@
         </div>
     </nav>
 </header>
-@yield('content')
+<main>
+    @include('partials.search')
+    @yield('content')
+</main>
 <footer>
     <div class="container">
         <hr>
         <p><strong>MonOffreD'emploi.fr</strong></p>
         <p>© 2024 - Tous droits réservés</p>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    @yield('footer_script_app')
+    <script>
+        $(document).ready(function () {
+            var observer = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        var messageId = $(entry.target).data('id');
+                        if ($(entry.target).data('user') === 'other' && $(entry.target).data('seen') == 0) {
+                            $.ajax({
+                                url: '/message/seen/' + messageId,
+                                type: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function () {
+                                    $(entry.target).css('border-color', '#dee2e6');
+                                    $(entry.target).data('seen', 1);
+                                }
+                            });
+                        }
+                    }
+                });
+            }, {});
+
+            $('.message').each(function () {
+                observer.observe(this);
+            });
+        });
+    </script>
 </footer>
 </body>
 </html>

@@ -2,8 +2,14 @@
 @section('title', 'Mon entreprise')
 @section('content')
     <div class="container">
-        <div class="btn btn-primary" data-bs-target="#edit-company" data-bs-toggle="modal">Modifier les
-            informations
+        @if(!$company->active)
+            <div class="alert alert-danger">Votre entreprise a été désactivé par un administrateur. Contactez
+                le service client pour plus d'informations.
+                <br>
+                Votre entreprise ainsi que vos offres d'emploi n'apparaissent plus sur notre site.
+            </div>
+        @endif
+        <div class="btn btn-primary" data-bs-target="#edit-company" data-bs-toggle="modal">Modifier les informations
         </div>
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -11,8 +17,8 @@
         <div class="row">
             <div class="col-md-12">
                 @if($company->banner)
-                    <img style="width: 300px" src="{{ asset($company->banner) }}"
-                         alt="Bannière de l'entreprise {{$company->company_name}}">
+                    <img style="width: 100%; height: 200px;object-fit: cover;object-position: center;"
+                         src="{{ asset($company->banner) }}" alt="Bannière de l'entreprise {{$company->company_name}}">
                 @else
                     <p class="text-danger">Vous n'avez pas de bannière, cliquez sur le bouton si dessus pour en ajouter
                         une</p>
@@ -25,13 +31,36 @@
                     <p class="text-danger">Vous n'avez pas de logo, cliquez sur le bouton si dessus pour en ajouter
                         un</p>
                 @endif
-                <p>Domaine : <strong>{{$company->activity}}</strong></p>
-                <p>Description : <strong>{!! nl2br(e($company->description)) !!}</strong></p>
-                <p>Localisation : <strong>{{$company->address}} - {{$company->city}}
-                        - {{$company->postal_code}}</strong></p>
-                <p>Numéro de téléphone : <strong>{{$company->company_phone}}</strong></p>
-                <p>Email : <strong>{{$company->company_email}}</strong></p>
-                <p>Site Web : <strong>{{$company->website}}</strong></p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Domaine</th>
+                            <td>{{$company->activity}}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{!! nl2br(e($company->description)) !!}</td>
+                        </tr>
+                        <tr>
+                            <th>Localisation</th>
+                            <td>{{$company->address}} - {{$company->city}} - {{$company->postal_code}}</td>
+                        </tr>
+                        <tr>
+                            <th>Numéro de téléphone</th>
+                            <td>{{$company->company_phone}}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{$company->company_email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Site Web</th>
+                            <td>{{$company->website}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

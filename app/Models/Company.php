@@ -37,6 +37,6 @@ class Company extends Model
 
     public function user()
     {
-        return $this->hasOne('App\Models\User');
+        return $this->hasOne(ApplyOffer::class, 'company_id');
     }
 }

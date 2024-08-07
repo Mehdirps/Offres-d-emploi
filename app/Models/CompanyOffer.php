@@ -25,4 +25,15 @@ class CompanyOffer extends Model
     {
         return $this->belongsTo('App\Models\Company');
     }
+
+    public function apply()
+    {
+        return $this->hasMany(ApplyOffer::class, 'offer_id');
+    }
+
+    public function favoriteUsers()
+    {
+        return $this->belongsToMany('App\Models\User', 'user_favorite_offer', 'offer_id', 'user_id');
+    }
+
 }

@@ -49,7 +49,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="annual_salary_minumun" class="form-label">Salaire minimum</label>
-                            <input type="text" class="form-control" id="annual_salary_minumun"
+                            <input type="number" class="form-control" id="annual_salary_minumun"
                                    name="annual_salary_minumun" value="{{old('annual_salary_minumun')}}">
                             @error('annual_salary_minumun')
                             <div class="alert alert-danger">{{ $message }}</div>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="annual_salary_maximun" class="form-label">Salaire maximum</label>
-                            <input type="text" class="form-control" id="annual_salary_maximun"
+                            <input type="number" class="form-control" id="annual_salary_maximun"
                                    name="annual_salary_maximun" value="{{old('annual_salary_maximun')}}">
                             @error('annual_salary_maximun')
                             <div class="alert alert-danger">{{ $message }}</div>

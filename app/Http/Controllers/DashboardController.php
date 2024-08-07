@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApplyOffer;
 use App\Models\Company;
 use App\Models\CompanyOffer;
 use Illuminate\Http\Request;
@@ -11,7 +12,11 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard/index');
+        $company = Company::where('user_id', Auth::user()->id)->first();
+
+        return view('dashboard/index',[
+            'company' => $company
+        ]);
     }
 
     public function viewCompany()
@@ -32,12 +37,24 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function viewSingleOfferByCompany($slug,$id)
+    public function viewSingleOfferByCompany($slug, $id)
     {
         $offer = CompanyOffer::where('id', $id)->first();
 
         return view('dashboard/offer', [
             'offer' => $offer,
+        ]);
+    }
+
+    public function offerApply()
+    {
+        $company = Company::find(Auth::user()->company->id);
+        $apply = ApplyOffer::where('company_id', $company->id)->get();
+        $offers = $company->offers;
+
+        return view('dashboard/offer_apply', [
+            'apply' => $apply,
+            'offers' => $offers,
         ]);
     }
 }
